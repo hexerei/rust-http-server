@@ -1,4 +1,4 @@
-use std::net::TcpListener;
+use std::net::{TcpListener, TcpStream};
 
 pub struct Server {
     addr: String,
@@ -14,6 +14,11 @@ impl Server {
 
         loop {
 
+            let res = listener.accept();
+            if res.is_err() {
+                continue;
+            }
+                let (stream, addr) = res.unwrap();
         }
 
     }
