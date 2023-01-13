@@ -1,5 +1,6 @@
-use std::{net::{TcpListener, TcpStream}, io::Read};
-use crate::http::{Request};
+use std::net::{TcpListener, TcpStream};
+use std::io::{Read, Write};
+use crate::http::{Request, Response, StatusCode};
 use std::convert::TryFrom;
 
 pub struct Server {
@@ -23,7 +24,9 @@ impl Server {
                             println!("Received a request: {}", String::from_utf8_lossy(&buffer));
                             match Request::try_from(&buffer[..]) {
                                 Ok(request) => {
-                                    println!("{:#?}", request)
+                                    println!("{:#?}", request);
+                                    let response = Response::new(StatusCode::NotFound, None);
+                                    write!(stream, response);
                                 },
                                 Err(e) => println!("Could not construct Reqeust: {}", e),
                             }
